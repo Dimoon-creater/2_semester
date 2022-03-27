@@ -49,6 +49,23 @@ def display():
     plt.show()
 
 
+def show_info():
+    F = open('data.txt', 'w')
+    F.write('    |x|     |y|     |t|\n')
+    step = check(T_entry.get())
+    t = step
+    M = check(M_entry.get())
+    R = 10
+
+    while t <= M:
+        x = R * np.cos(t)
+        y = R * np.sin(t)
+        F.write(f' | {round(x, 4)} | {round(y, 4)} | {round(t, 4)} |\n')
+        t += step
+    F.close()
+    messagebox.showinfo("GUI Python", "Данные находятся в файле data.txt")
+
+
 root = Tk()
 root.title("GUI на Python")
 
@@ -73,6 +90,8 @@ T_entry.insert(0, "0.01")
 M_entry.insert(0, "20")
 
 display_button = Button(text="Display", command=display)
-display_button.grid(row=3, column=0, padx=10, pady=10, sticky="e")
+display_button.grid(row=3, column=1, padx=10, pady=10, sticky="e")
+show_info_button = Button(text="Show_info", command=show_info)
+show_info_button.grid(row=4, column=1, padx=10, pady=10, sticky="e")
 
 root.mainloop()
