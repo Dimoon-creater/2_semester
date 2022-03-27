@@ -35,12 +35,16 @@ def display():
         t_arr.append(round(t, 3))
         t += step
 
-    fig, ax = plt.subplots()
-    ax.set(
-        title='Граффик функции: Cos(t) и Sin(t) ',
+    fig, ax = plt.subplots(1, 2)
+    ax[0].set(
+        title='Граффик функции: Cos(t)',
         xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
-    plt.plot(t_arr, x_arr)
-    plt.plot(t_arr, y_arr)
+    ax[0].plot(t_arr, x_arr, 'g')
+
+    ax[1].set(
+        title='Граффик функции: Sin(t)',
+        xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
+    ax[1].plot(t_arr, y_arr, 'r')
 
     plt.show()
 
