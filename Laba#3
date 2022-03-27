@@ -1,0 +1,74 @@
+from tkinter import *
+from tkinter import messagebox
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+def check(a):
+    while True:
+        try:
+            a = str(a).replace(',', '.')
+            a = float(a)
+            if 0 <= a >= 18554:
+                messagebox.showinfo("GUI Python", 'Слишком большое значение!!! Введите моньше ')
+                raise ValueError()
+        except ValueError:
+            messagebox.showinfo("GUI Python", "Введите корректней! Пример (0.01) или (20)")
+        break
+    return a
+
+
+def display():
+    step = check(T_entry.get())
+    t = step
+    M = check(M_entry.get())
+    R = 10
+    x_arr = list()
+    y_arr = list()
+    t_arr = list()
+
+    while t <= M:
+        X = R * np.cos(t)
+        Y = R * np.sin(t)
+        x_arr.append(round(X, 3))
+        y_arr.append(round(Y, 3))
+        t_arr.append(round(t, 3))
+        t += step
+
+    fig, ax = plt.subplots()
+    ax.set(
+        title='Граффик функции: Cos(t) и Sin(t) ',
+        xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
+    plt.plot(t_arr, x_arr)
+    plt.plot(t_arr, y_arr)
+
+    plt.show()
+
+
+root = Tk()
+root.title("GUI на Python")
+
+X_label = Label(text="        X: Cos(t)")
+Y_label = Label(text="        Y: Sin(t)")
+T_label = Label(text="Введите T:")
+M_label = Label(text="Введите M:")
+
+X_label.grid(row=0, column=0, sticky="w")
+Y_label.grid(row=0, column=1, sticky="w")
+T_label.grid(row=1, column=0, sticky="w")
+M_label.grid(row=2, column=0, sticky="w")
+
+T_entry = Entry()
+M_entry = Entry()
+
+T_entry.grid(row=1, column=1, padx=10, pady=10)
+M_entry.grid(row=2, column=1, padx=10, pady=10)
+
+# вставка начальных данных
+T_entry.insert(0, "0.01")
+M_entry.insert(0, "20")
+
+display_button = Button(text="Display", command=display)
+display_button.grid(row=3, column=0, padx=10, pady=10, sticky="e")
+
+root.mainloop()
