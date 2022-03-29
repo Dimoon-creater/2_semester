@@ -22,29 +22,26 @@ def display():
     step = check(T_entry.get())
     t = step
     M = check(M_entry.get())
-    R = 10
+    R = 5
     x_arr = list()
     y_arr = list()
     t_arr = list()
 
-    while t <= M:
-        X = R * np.cos(t)
-        Y = R * np.sin(t)
-        x_arr.append(round(X, 3))
-        y_arr.append(round(Y, 3))
+    while (0 or t) <= (M * np.pi):
+        T = t
+        x = R*np.sin(T)
+        y = R*np.cos(T)
+        x_arr.append(round(x, 3))
+        y_arr.append(round(y, 3))
         t_arr.append(round(t, 3))
         t += step
 
-    fig, ax = plt.subplots(1, 2)
-    ax[0].set(
-        title='Граффик функции: Cos(t)',
-        xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
-    ax[0].plot(t_arr, x_arr, 'g')
+    fig, ax = plt.subplots()
 
-    ax[1].set(
-        title='Граффик функции: Sin(t)',
+    ax.set(
+        title=f'Граффик функции: x = R * T - R * np.sin(T) y = R - R * np.cos(T)  ',
         xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
-    ax[1].plot(t_arr, y_arr, 'r')
+    ax.plot(x_arr, y_arr, 'r')
 
     plt.show()
 
@@ -55,11 +52,12 @@ def show_info():
     step = check(T_entry.get())
     t = step
     M = check(M_entry.get())
-    R = 10
+    R = 5
 
     while t <= M:
-        x = R * np.cos(t)
-        y = R * np.sin(t)
+        T = t * np.pi
+        x = R * np.sin(T)
+        y = R * np.cos(T)
         F.write(f' | {round(x, 4)} | {round(y, 4)} | {round(t, 4)} |\n')
         t += step
     F.close()
@@ -87,7 +85,7 @@ M_entry.grid(row=2, column=1, padx=10, pady=10)
 
 # вставка начальных данных
 T_entry.insert(0, "0.01")
-M_entry.insert(0, "20")
+M_entry.insert(0, "2")
 
 display_button = Button(text="Display", command=display)
 display_button.grid(row=3, column=1, padx=10, pady=10, sticky="e")
