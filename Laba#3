@@ -4,6 +4,41 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+def index_min(arr):
+    minp = list()
+    min_ = arr[0]
+    p = 0
+    for i in arr:
+        if i <= min_:
+            min_ = i
+    for k in arr:
+        if k == min_:
+            minp.append(p)
+        p += 1
+    return minp
+
+
+def index_max(arr):
+    maxp = list()
+    max_ = arr[0]
+    p = 0
+    for i in arr:
+        if i >= max_:
+            max_ = i
+    for k in arr:
+        if k == max_:
+            maxp.append(p)
+        p += 1
+    return maxp
+
+
+def values(arr_m, arr):
+    m = list()
+    for i in arr_m:
+        m.append(arr[i])
+    return m
+
+
 def check(a):
     while True:
         try:
@@ -28,20 +63,28 @@ def display():
     t_arr = list()
 
     while (0 or t) <= (M * np.pi):
-        T = t
-        x = R*np.sin(T)
-        y = R*np.cos(T)
+        x = R*np.sin(t)
+        y = R*np.cos(t)
         x_arr.append(round(x, 3))
         y_arr.append(round(y, 3))
         t_arr.append(round(t, 3))
         t += step
 
+    arr_min = index_min(y_arr)
+    arr_max = index_max(y_arr)
+    arr_min_y = values(arr_min, y_arr)
+    arr_max_y = values(arr_max, y_arr)
+    arr_min_x = values(arr_min, x_arr)
+    arr_max_x = values(arr_max, x_arr)
+
     fig, ax = plt.subplots()
 
     ax.set(
-        title=f'Граффик функции: x = R * T - R * np.sin(T) y = R - R * np.cos(T)  ',
+        title=f'Граффик функции: x = cos(t) y = sin(t)  ',
         xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
     ax.plot(x_arr, y_arr, 'r')
+    ax.plot(arr_max_x, arr_max_y, marker='o', color='y')
+    ax.plot(arr_min_x, arr_min_y, marker='o', color='y')
 
     plt.show()
 
