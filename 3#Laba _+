@@ -1,0 +1,171 @@
+from tkinter import *
+from tkinter import messagebox
+import matplotlib.pyplot as plt
+import numpy as np
+import openpyxl
+
+
+def index_min(arr):
+    minp = list()
+    min_ = arr[0]
+    p = 0
+    for i in arr:
+        if i <= min_:
+            min_ = i
+    for k in arr:
+        if k == min_:
+            minp.append(p)
+        p += 1
+    return minp
+
+
+def index_max(arr):
+    maxp = list()
+    max_ = arr[0]
+    p = 0
+    for i in arr:
+        if i >= max_:
+            max_ = i
+    for k in arr:
+        if k == max_:
+            maxp.append(p)
+        p += 1
+    return maxp
+
+
+def values(arr_m, arr):
+    m = list()
+    for i in arr_m:
+        m.append(arr[i])
+    return m
+
+
+def check(a):
+    while True:
+        try:
+            a = str(a).replace(',', '.')
+            a = float(a)
+            if 0 <= a >= 18554:
+                messagebox.showinfo("GUI Python", 'Слишком большое значение!!! Введите моньше ')
+                raise ValueError()
+        except ValueError:
+            messagebox.showinfo("GUI Python", "Введите корректней! Пример (0.01) или (20)")
+        break
+    return a
+
+
+def display():
+    step = check(T_entry.get())
+    t = step
+    M = check(M_entry.get())
+    R = 5
+    x_arr = list()
+    y_arr = list()
+    t_arr = list()
+
+    while (0 or t) <= (M * np.pi):
+        x = R*np.sin(t)
+        y = R*np.cos(t)
+        x_arr.append(round(x, 3))
+        y_arr.append(round(y, 3))
+        t_arr.append(round(t, 3))
+        t += step
+
+    arr_min = index_min(y_arr)
+    arr_max = index_max(y_arr)
+    arr_min_y = values(arr_min, y_arr)
+    arr_max_y = values(arr_max, y_arr)
+    arr_min_x = values(arr_min, x_arr)
+    arr_max_x = values(arr_max, x_arr)
+
+    fig, ax = plt.subplots()
+
+    ax.set(
+        title=f'Граффик функции: x = cos(t) y = sin(t)  ',
+        xlabel='ось абцис (XAxis)', ylabel='ось ординат (YAxis)')
+    ax.plot(x_arr, y_arr, 'r')
+    ax.plot(arr_max_x, arr_max_y, marker='o', color='b')
+    ax.plot(arr_min_x, arr_min_y, marker='o', color='b')
+
+    plt.show()
+
+
+def show_info():
+    step = check(T_entry.get())
+    t = step
+    M = check(M_entry.get())
+    R = 5
+    x_data = list()
+    y_data = list()
+    t_data = list()
+    n = 0
+
+    while (0 or t) <= (M * np.pi):
+        n += 1
+        x = R * np.sin(t)
+        y = R * np.cos(t)
+        x_data.append(round(x, 3))
+        y_data.append(round(y, 3))
+        t_data.append(round(t, 3))
+        t += step
+
+    wb = openpyxl.Workbook()
+    sheet = wb.active
+
+    i = 2
+    while i <= n:
+        c1 = sheet['A1']
+        c1.value = 'X'
+        cn = sheet[f'A{i}']
+        cn.value = x_data[i - 2]
+        i += 1
+
+    i = 2
+    while i <= n:
+        c2 = sheet['B1']
+        c2.value = 'Y'
+        cn = sheet[f'B{i}']
+        cn.value = y_data[i - 2]
+        i += 1
+
+    i = 2
+    while i <= n:
+        c3 = sheet['C1']
+        c3.value = 'T'
+        cn = sheet[f'C{i}']
+        cn.value = t_data[i - 2]
+        i += 1
+
+    wb.save("data.xlsx")
+    messagebox.showinfo("GUI Python", "Данные находятся в файле data.xlsx")
+
+
+root = Tk()
+root.title("GUI на Python")
+
+X_label = Label(text="        X: Cos(t)")
+Y_label = Label(text="        Y: Sin(t)")
+T_label = Label(text="Введите T:")
+M_label = Label(text="Введите M:")
+
+X_label.grid(row=0, column=0, sticky="w")
+Y_label.grid(row=0, column=1, sticky="w")
+T_label.grid(row=1, column=0, sticky="w")
+M_label.grid(row=2, column=0, sticky="w")
+
+T_entry = Entry()
+M_entry = Entry()
+
+T_entry.grid(row=1, column=1, padx=10, pady=10)
+M_entry.grid(row=2, column=1, padx=10, pady=10)
+
+# вставка начальных данных
+T_entry.insert(0, "0.01")
+M_entry.insert(0, "2")
+
+display_button = Button(text="Display", command=display)
+display_button.grid(row=3, column=1, padx=10, pady=10, sticky="e")
+show_info_button = Button(text="Show_info", command=show_info)
+show_info_button.grid(row=4, column=1, padx=10, pady=10, sticky="e")
+
+root.mainloop()
