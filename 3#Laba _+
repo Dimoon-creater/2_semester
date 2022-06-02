@@ -140,32 +140,57 @@ def show_info():
     messagebox.showinfo("GUI Python", "Данные находятся в файле data.xlsx")
 
 
+def square():
+    R = 5
+    M = check(M_entry.get())
+    N = check(N_entry.get())
+    h = ((M * np.pi) / N)
+    Sx = 0
+    Sy = 0
+    i = 0
+    while i <= (M * np.pi):
+        Fx = np.cos(i)
+        Fy = np.sin(i)
+        Sx = abs(Sx) + abs(h * Fx)
+        Sy = abs(Sy) + abs(h * Fy)
+        i += h
+    messagebox.showinfo("GUI Python", f'Интегрирование по Cos = {Sx}\nИнтегрирование по Sin = {Sy}')
+
 root = Tk()
 root.title("GUI на Python")
 
 X_label = Label(text="        X: Cos(t)")
 Y_label = Label(text="        Y: Sin(t)")
+R_label = Label(text="        R = 5")
 T_label = Label(text="Введите T:")
 M_label = Label(text="Введите M:")
+N_label = Label(text="Введите N:")
 
 X_label.grid(row=0, column=0, sticky="w")
 Y_label.grid(row=0, column=1, sticky="w")
+R_label.grid(row=0, column=2, sticky="w")
 T_label.grid(row=1, column=0, sticky="w")
 M_label.grid(row=2, column=0, sticky="w")
+N_label.grid(row=3, column=0, sticky="w")
 
 T_entry = Entry()
 M_entry = Entry()
+N_entry = Entry()
 
 T_entry.grid(row=1, column=1, padx=10, pady=10)
 M_entry.grid(row=2, column=1, padx=10, pady=10)
+N_entry.grid(row=3, column=1, padx=10, pady=10)
 
 # вставка начальных данных
 T_entry.insert(0, "0.01")
 M_entry.insert(0, "2")
+N_entry.insert(0, "0")
 
 display_button = Button(text="Display", command=display)
-display_button.grid(row=3, column=1, padx=10, pady=10, sticky="e")
+display_button.grid(row=4, column=0, padx=10, pady=10, sticky="e")
 show_info_button = Button(text="Show_info", command=show_info)
 show_info_button.grid(row=4, column=1, padx=10, pady=10, sticky="e")
+square_button = Button(text="Square", command=square)
+square_button.grid(row=4, column=3, padx=10, pady=10, sticky="e")
 
 root.mainloop()
